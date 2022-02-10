@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -9,32 +9,13 @@
 /*   Updated: 2022/02/09 17:49:21 by nenvoy           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "philo.h"
 
-int	thread_create(t_data *data)
+unsigned long	get_time(void)
 {
-	int	i;
+	struct timeval	time;
 
-	i = 0;
-	while (i < data->philo_count)
-	{
-		data->philo[i].run_time = get_time();
-		if ((pthread_create(&data->philo[i].thread, NULL,
-					philo_actions, &data->philo[i])) != 0)
-			return (1);
-		pthread_detach(data->philo->thread);
-		i++;
-	}
-	return (0);
-}
-
-int	main(int argc, char **argv)
-{
-	t_data	data;
-
-	if (check(argc, argv))
-		return (printf("Error\n"));
-	init(argc, argv, &data);
-	thread_create(&data);
-	return (0);
+	gettimeofday(&time, NULL);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }

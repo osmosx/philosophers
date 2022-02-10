@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,30 +11,12 @@
 /* ************************************************************************** */
 #include "philo.h"
 
-int	thread_create(t_data *data)
+void	*philo_actions(void *argv)
 {
-	int	i;
+	t_philo	*philo;
 
-	i = 0;
-	while (i < data->philo_count)
-	{
-		data->philo[i].run_time = get_time();
-		if ((pthread_create(&data->philo[i].thread, NULL,
-					philo_actions, &data->philo[i])) != 0)
-			return (1);
-		pthread_detach(data->philo->thread);
-		i++;
-	}
-	return (0);
+	philo = (t_philo *)argv;
+	printf("Hello Philo\n");
+	return (NULL);
 }
 
-int	main(int argc, char **argv)
-{
-	t_data	data;
-
-	if (check(argc, argv))
-		return (printf("Error\n"));
-	init(argc, argv, &data);
-	thread_create(&data);
-	return (0);
-}

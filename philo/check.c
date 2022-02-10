@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,30 +11,43 @@
 /* ************************************************************************** */
 #include "philo.h"
 
-int	thread_create(t_data *data)
+static int	check_number(char *str)
 {
 	int	i;
 
 	i = 0;
-	while (i < data->philo_count)
+	while (str[i] != '\0')
 	{
-		data->philo[i].run_time = get_time();
-		if ((pthread_create(&data->philo[i].thread, NULL,
-					philo_actions, &data->philo[i])) != 0)
+		if (str[i] < '0' || str[i] > '9')
 			return (1);
-		pthread_detach(data->philo->thread);
 		i++;
 	}
 	return (0);
 }
 
-int	main(int argc, char **argv)
-{
-	t_data	data;
+//static int	error(void)
+//{
+//	printf("Error\n");
+//	return (1);
+//}
 
-	if (check(argc, argv))
-		return (printf("Error\n"));
-	init(argc, argv, &data);
-	thread_create(&data);
+int	check(int argc, char **argv)
+{
+	int	i;
+
+	i = 1;
+	if (argc == 5 || argc == 6)
+	{
+		if (ft_atoi(argv[1]) > 200 || ft_atoi(argv[1]) < 1)
+			return (1);
+		while (i < argc)
+		{
+			if (check_number(argv[i]))
+				return (1);
+			i++;
+		}
+	}
+	else
+		return (1);
 	return (0);
 }

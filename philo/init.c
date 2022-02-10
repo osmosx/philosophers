@@ -12,18 +12,30 @@
 
 #include "philo.h"
 
-void	init_philo(t_philo *philo, t_data *data, char **argv, int id)
+void	init_philo(t_data *data, int argc, char **argv)
 {
-	philo->id = id + 1;
-	philo->time_to_die = ft_atoi(argv[2]);
-	philo->time_to_eat = ft_atoi(argv[3]);
-	philo->time_to_sleep = ft_atoi(argv[4]);
-	philo->count_eat = data->count_eat;
-	philo->print[id] = data->print;
+	int	i;
 
+	i = 0;
+	while (i < data->philo_count)
+	{
+		data->philo[i].id = i + 1;
+		data->philo[i].time_to_die = ft_atoi(argv[2]);
+		data->philo[i].time_to_eat = ft_atoi(argv[3]);
+		data->philo[i].time_to_sleep = ft_atoi(argv[4]);
+		if (argc == 6)
+			data->philo[i].count_eat = ft_atoi(argv[5]);
+		else
+			data->philo[i].count_eat = -1;
+		data->philo[i].run_time = 0;
+		data->philo[i].print = data->print;
+		data->philo[i].left_fork = &data->forks[i];
+		data->philo[i].right_fork = &data->forks[(i + 1) % data->philo_count];
+		i++;
+	}
 }
 
-static int	int_mutex(t_data *data)
+static int	init_mutex(t_data *data)
 {
 	int	i;
 
@@ -31,12 +43,9 @@ static int	int_mutex(t_data *data)
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->philo_count);
 	if (!data->forks)
 		return (1);
-	data->print = malloc(sizeof(pthread_mutex_t));
-	if (!data->print)
-		return (1);
 	while (i < data->philo_count)
-		pthread_mutex_init(data->forks[i++], NULL);
-	pthread_mutex_init(data->print, NULL);
+		pthread_mutex_init(&data->forks[i++], NULL);
+	pthread_mutex_init(&data->print, NULL);
 	return (0);
 }
 
@@ -49,14 +58,7 @@ int	init(int argc, char **argv, t_data *data)
 	data->philo = malloc(sizeof(t_philo) * data->philo_count);
 	if (!data->philo)
 		return (1);
-	if (argc == 6)
-		data->count_eat = ft_atoi(argv[5]);
-	else
-		data->count_eat = -1;
-	int_mutex(data);
-	while (id < data->philo_count)
-	{
-		init_philo(&data->philo[i], data, argv, i);
-		i++;
-	}
+	init_mutex(data);
+	init_philo(data, argc, argv);
+	return (0);
 }
