@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   end.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nenvoy <nenvoy@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,31 +11,41 @@
 /* ************************************************************************** */
 #include "philo.h"
 
-void	thread_create(t_data *data)
+static int	count_eat(t_data *data)
 {
 	int	i;
+	int	count;
 
 	i = 0;
-	while (i < data->philo_count)
+	count = 0;
+	while (1)
 	{
-		data->philo[i].run_time = get_time();
-		if ((pthread_create(&data->philo[i].thread, NULL,
-					philo_actions, &data->philo[i])) != 0)
-			return ;
-		pthread_detach(data->philo[i].thread);
-		i++;
+		if (data->philo[i].count_eat == 0)
+		{
+			count++;
+			i++;
+		}
+		if (count == data->philo_count)
+		{
+			pthread_mutex_lock(data->philo->print);
+			printf("%lldms %d "EAT_ALL"", \
+			get_time() - data->philo->run_time, data->philo->id);
+			pthread_mutex_unlock(data->philo->print);
+			return (1);
+		}
 	}
-	if (end_of_life(data) == 1)
-		return ;
 }
 
-int	main(int argc, char **argv)
+static int	die(t_data *data)
 {
-	t_data	data;
-
-	if (check(argc, argv))
-		return (printf("Error\n"));
-	init(argc, argv, &data);
-	thread_create(&data);
 	return (0);
+}
+
+int	end_of_life(t_data *data)
+{
+	while (1)
+	{
+		if (count_eat(data) == 1 || die(data) == 1)
+			return (1);
+	}
 }

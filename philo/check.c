@@ -25,12 +25,6 @@ static int	check_number(char *str)
 	return (0);
 }
 
-//static int	error(void)
-//{
-//	printf("Error\n");
-//	return (1);
-//}
-
 int	check(int argc, char **argv)
 {
 	int	i;
@@ -38,7 +32,11 @@ int	check(int argc, char **argv)
 	i = 1;
 	if (argc == 5 || argc == 6)
 	{
-		if (ft_atoi(argv[1]) > 200 || ft_atoi(argv[1]) < 1)
+		if (ft_atoi(argv[1]) > 200 || ft_atoi(argv[1]) < 2
+			|| ft_atoi(argv[2]) < 60 || ft_atoi(argv[3]) < 60
+			|| ft_atoi(argv[4]) < 60)
+			return (1);
+		if (argc == 6 && ft_atoi(argv[5]) < 0)
 			return (1);
 		while (i < argc)
 		{

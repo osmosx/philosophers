@@ -12,10 +12,22 @@
 
 #include "philo.h"
 
-unsigned long	get_time(void)
+long long	get_time(void)
 {
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+}
+
+void	ft_time(long long time, long long start_time)
+{
+	long long	i;
+
+	i = get_time();
+	while (i < time + start_time)
+	{
+		usleep(100);
+		i = get_time();
+	}
 }
