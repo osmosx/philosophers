@@ -29,7 +29,7 @@ static void	right_fork(t_philo *philo)
 	pthread_mutex_unlock(philo->print);
 }
 
-static void	eating(t_philo *philo)
+void	eating(t_philo *philo)
 {
 	long long	start_eat;
 
@@ -48,7 +48,7 @@ static void	eating(t_philo *philo)
 		philo->count_eat--;
 }
 
-static void	sleeping(t_philo *philo)
+void	sleeping(t_philo *philo)
 {
 	long long	start_sleep;
 
@@ -60,25 +60,10 @@ static void	sleeping(t_philo *philo)
 	ft_time(philo->time_to_eat, start_sleep);
 }
 
-static void	thinking(t_philo *philo)
+void	thinking(t_philo *philo)
 {
 	pthread_mutex_lock(philo->print);
 	printf("%lldms %d "THINK"", \
 	get_time() - philo->run_time, philo->id);
 	pthread_mutex_unlock(philo->print);
-}
-
-void	*philo_actions(void *argv)
-{
-	t_philo	*philo;
-
-	philo = (t_philo *)argv;
-	if (philo->even_or_not == 1)
-		usleep(100);
-	while (1)
-	{
-		eating(philo);
-		sleeping(philo);
-		thinking(philo);
-	}
 }

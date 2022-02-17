@@ -24,8 +24,9 @@
 # define EAT     "\033[32m is eating\033[0m\n"
 # define SLEEP   "\033[35m is sleeping\033[0m\n"
 # define THINK   "\033[36m is thinking\033[0m\n"
-# define DIE	 "\033[31m died\033[0m\n"
 # define EAT_ALL "\033[31m all philosophers have eaten\033[0m\n"
+# define DIE	 "\033[31m died\033[0m\n"
+
 
 typedef struct s_philo
 {
@@ -55,6 +56,9 @@ int				ft_atoi(const char *str);
 int				check(int argc, char **argv);
 int				init(int argc, char **argv, t_data *data);
 void			*philo_actions(void *argv);
+void			eating(t_philo *philo);
+void			sleeping(t_philo *philo);
+void			thinking(t_philo *philo);
 long long		get_time(void);
 void			ft_time(long long time, long long start_time);
 int				end_of_life(t_data *data);

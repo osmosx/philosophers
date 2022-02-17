@@ -11,6 +11,21 @@
 /* ************************************************************************** */
 #include "philo.h"
 
+void	*philo_actions(void *argv)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)argv;
+	if (philo->even_or_not == 1)
+		usleep(100);
+	while (1)
+	{
+		eating(philo);
+		sleeping(philo);
+		thinking(philo);
+	}
+}
+
 void	thread_create(t_data *data)
 {
 	int	i;
