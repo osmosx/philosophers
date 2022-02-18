@@ -27,7 +27,6 @@ static void	right_fork(t_philo *philo)
 	printf("%lldms %d "FORK_R"%lldms %d "EAT"", \
 	get_time() - philo->run_time, philo->id, \
 	get_time() - philo->run_time, philo->id);
-	philo->last_eat = get_time();
 	pthread_mutex_unlock(philo->print);
 }
 
@@ -36,6 +35,7 @@ void	eating(t_philo *philo)
 	long long	start_eat;
 
 	start_eat = get_time();
+	philo->last_eat = start_eat;
 	left_fork(philo);
 	right_fork(philo);
 	ft_time(philo->time_to_eat, start_eat);

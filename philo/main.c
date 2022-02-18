@@ -44,12 +44,14 @@ void	thread_create(t_data *data)
 		return ;
 }
 
+
+
 int	main(int argc, char **argv)
 {
 	t_data	data;
 
 	if (check(argc, argv))
-		return (printf("Error\n"));
+		return (error_msg());
 	init(argc, argv, &data);
 	thread_create(&data);
 	return (0);

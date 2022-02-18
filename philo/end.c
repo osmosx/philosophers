@@ -41,13 +41,11 @@ static int	die(t_data *data)
 {
 	int			i;
 	int			j;
-	long long	time;
 
 	i = 0;
-	time = get_time();
 	while (i < data->philo_count)
 	{
-		if ((time - data->philo[i].last_eat) >= data->philo[i].time_to_die)
+		if (get_time() - data->philo[i].last_eat >= data->philo[i].time_to_die)
 		{
 			pthread_mutex_lock(data->philo->print);
 			j = -1;

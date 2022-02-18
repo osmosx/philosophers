@@ -25,3 +25,17 @@ void	ft_time(long long time, long long start_time)
 	while (get_time() < time + start_time)
 		usleep(100);
 }
+
+int	error_msg(void)
+{
+	printf(" ____________________________________________________ \n");
+	printf("|            Please enter 4 or 5 arguments           |\n");
+	printf("|____________________________________________________|\n");
+	printf("|             [1][Number of philosophers <= 200]     |\n");
+	printf("|             [2][Time to die > 60]                  |\n");
+	printf("|             [3][Time to eat > 60]                  |\n");
+	printf("|             [4][Time to sleep > 60]                |\n");
+	printf("|             [5][Number of meals > 0]               |\n");
+	printf("|____________________________________________________|\n");
+	return (0);
+}

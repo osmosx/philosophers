@@ -53,6 +53,7 @@ typedef struct s_data
 
 int				ft_atoi(const char *str);
 int				check(int argc, char **argv);
+int				error_msg(void);
 int				init(int argc, char **argv, t_data *data);
 void			*philo_actions(void *argv);
 void			eating(t_philo *philo);
