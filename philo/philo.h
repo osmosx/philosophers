@@ -27,7 +27,6 @@
 # define EAT_ALL "\033[31m all philosophers have eaten\033[0m\n"
 # define DIE	 "\033[31m died\033[0m\n"
 
-
 typedef struct s_philo
 {
 	int				id;

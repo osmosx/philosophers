@@ -18,12 +18,11 @@ static int	count_eat(t_data *data)
 
 	i = 0;
 	count = 0;
-	while (1)
+	while (i < data->philo_count)
 	{
 		if (data->philo[i].count_eat == 0)
 		{
 			count++;
-			i++;
 		}
 		if (count == data->philo_count)
 		{
@@ -33,11 +32,33 @@ static int	count_eat(t_data *data)
 			pthread_mutex_unlock(data->philo->print);
 			return (1);
 		}
+		i++;
 	}
+	return (0);
 }
 
 static int	die(t_data *data)
 {
+	int			i;
+	int			j;
+	long long	time;
+
+	i = 0;
+	time = get_time();
+	while (i < data->philo_count)
+	{
+		if ((time - data->philo[i].last_eat) >= data->philo[i].time_to_die)
+		{
+			pthread_mutex_lock(data->philo->print);
+			j = -1;
+			while (++j < data->philo_count)
+				pthread_detach(data->philo[j].thread);
+			printf("%lldms %d "DIE"", \
+			get_time() - data->philo->run_time, data->philo->id);
+			return (1);
+		}
+			i++;
+	}
 	return (0);
 }
 
@@ -45,7 +66,9 @@ int	end_of_life(t_data *data)
 {
 	while (1)
 	{
-		if (count_eat(data) == 1 || die(data) == 1)
+		if (die(data) == 1)
+			return (1);
+		if (count_eat(data) == 1)
 			return (1);
 	}
 }

@@ -32,7 +32,7 @@ int	check(int argc, char **argv)
 	i = 1;
 	if (argc == 5 || argc == 6)
 	{
-		if (ft_atoi(argv[1]) > 200 || ft_atoi(argv[1]) < 2
+		if (ft_atoi(argv[1]) > 200 || ft_atoi(argv[1]) < 1
 			|| ft_atoi(argv[2]) < 60 || ft_atoi(argv[3]) < 60
 			|| ft_atoi(argv[4]) < 60)
 			return (1);
