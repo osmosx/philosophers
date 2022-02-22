@@ -31,7 +31,7 @@ void	init_philo(t_data *data, int argc, char **argv)
 			data->philo[i].count_eat = ft_atoi(argv[5]);
 		else
 			data->philo[i].count_eat = -1;
-		data->philo[i].run_time = 0;
+		data->philo[i].run_time = get_time();
 		data->philo[i].print = &data->print;
 		data->philo[i].left_fork = &data->forks[i];
 		data->philo[i].right_fork = &data->forks[(i + 1) % data->philo_count];

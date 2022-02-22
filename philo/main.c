@@ -33,11 +33,10 @@ void	thread_create(t_data *data)
 	i = 0;
 	while (i < data->philo_count)
 	{
-		data->philo[i].run_time = get_time();
 		if ((pthread_create(&data->philo[i].thread, NULL,
 					philo_actions, &data->philo[i])) != 0)
 			return ;
-		pthread_detach(data->philo[i].thread);
+//		pthread_detach(data->philo[i].thread);
 		i++;
 	}
 	if (end_of_life(data) == 1)

@@ -14,6 +14,7 @@
 static int	count_eat(t_data *data)
 {
 	int	i;
+	int	j;
 	int	count;
 
 	i = 0;
@@ -21,12 +22,13 @@ static int	count_eat(t_data *data)
 	while (i < data->philo_count)
 	{
 		if (data->philo[i].count_eat == 0)
-		{
 			count++;
-		}
 		if (count == data->philo_count)
 		{
 			pthread_mutex_lock(data->philo->print);
+			j = 0;
+			while (j++ < data->philo_count)
+				pthread_detach(data->philo[j].thread);
 			printf("%lldms %d "EAT_ALL"", \
 			get_time() - data->philo->run_time, data->philo->id);
 			pthread_mutex_unlock(data->philo->print);
@@ -48,8 +50,8 @@ static int	die(t_data *data)
 		if (get_time() - data->philo[i].last_eat >= data->philo[i].time_to_die)
 		{
 			pthread_mutex_lock(data->philo->print);
-			j = -1;
-			while (++j < data->philo_count)
+			j = 0;
+			while (j++ < data->philo_count)
 				pthread_detach(data->philo[j].thread);
 			printf("%lldms %d "DIE"", \
 			get_time() - data->philo->run_time, data->philo->id);
