@@ -31,11 +31,10 @@ void	init_philo(t_data *data, int argc, char **argv)
 		data->philo[i].last_eat = get_time();
 		data->philo[i].print = &data->print;
 		data->philo[i].left_fork = &data->forks[i];
-		data->philo[i].right_fork = &data->forks[(i + 1) % data->philo_count];
+		data->philo[i].right_fork = &data->forks[i + 1];
 		if (i == data->philo_count - 1)
 		{
-			data->philo[i].left_fork = &data->forks[(i + 1) % \
-													data->philo_count];
+			data->philo[i].left_fork = &data->forks[i + 1];
 			data->philo[i].right_fork = &data->forks[i];
 		}
 		i++;

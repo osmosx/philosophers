@@ -42,8 +42,6 @@ void	thread_create(t_data *data)
 		return ;
 }
 
-
-
 int	main(int argc, char **argv)
 {
 	t_data	data;
