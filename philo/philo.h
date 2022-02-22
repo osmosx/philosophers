@@ -60,6 +60,6 @@ void			eating(t_philo *philo);
 void			sleeping(t_philo *philo);
 void			thinking(t_philo *philo);
 long long		get_time(void);
-void			ft_time(long long time, long long start_time);
+void			ft_time(long long start_time);
 int				end_of_life(t_data *data);
 #endif

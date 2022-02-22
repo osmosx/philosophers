@@ -17,7 +17,7 @@ void	*philo_actions(void *argv)
 
 	philo = (t_philo *)argv;
 	if (philo->id % 2 != 0)
-		usleep(1);
+		usleep(100);
 	while (1)
 	{
 		eating(philo);

@@ -20,8 +20,11 @@ long long	get_time(void)
 	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }
 
-void	ft_time(long long time, long long start_time)
+void	ft_time(long long start_time)
 {
+	long long	time;
+
+	time = get_time();
 	while (get_time() < (time + start_time))
 		usleep(1);
 }

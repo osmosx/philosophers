@@ -37,7 +37,7 @@ void	eating(t_philo *philo)
 	pthread_mutex_lock(&(philo->m_time));
 	philo->last_eat = get_time();
 	pthread_mutex_unlock(&(philo->m_time));
-	ft_time(philo->last_eat, philo->time_to_eat);
+	ft_time(philo->time_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 	if (philo->count_eat > 0)
@@ -57,7 +57,7 @@ void	sleeping(t_philo *philo)
 	printf("%lldms %d "SLEEP"", \
 	get_time() - philo->run_time, philo->id);
 	pthread_mutex_unlock(philo->print);
-	ft_time(start_sleep, philo->time_to_sleep);
+	ft_time(philo->time_to_sleep);
 }
 
 void	thinking(t_philo *philo)

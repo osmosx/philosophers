@@ -15,8 +15,8 @@ static void	detach(t_data *data)
 {
 	int	i;
 
-	i = 0;
-	while (i++ < data->philo_count)
+	i = -1;
+	while (++i < data->philo_count)
 		pthread_detach(data->philo[i].thread);
 }
 
