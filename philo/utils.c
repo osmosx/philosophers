@@ -22,8 +22,8 @@ long long	get_time(void)
 
 void	ft_time(long long time, long long start_time)
 {
-	while (get_time() < time + start_time)
-		usleep(100);
+	while (get_time() < (time + start_time))
+		usleep(1);
 }
 
 int	error_msg(void)

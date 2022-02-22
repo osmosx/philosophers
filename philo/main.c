@@ -16,8 +16,8 @@ void	*philo_actions(void *argv)
 	t_philo	*philo;
 
 	philo = (t_philo *)argv;
-	if (philo->even_or_not == 1)
-		usleep(100);
+	if (philo->id % 2 != 0)
+		usleep(1);
 	while (1)
 	{
 		eating(philo);
@@ -36,7 +36,6 @@ void	thread_create(t_data *data)
 		if ((pthread_create(&data->philo[i].thread, NULL,
 					philo_actions, &data->philo[i])) != 0)
 			return ;
-//		pthread_detach(data->philo[i].thread);
 		i++;
 	}
 	if (end_of_life(data) == 1)

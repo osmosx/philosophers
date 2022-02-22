@@ -30,7 +30,6 @@
 typedef struct s_philo
 {
 	int				id;
-	int				even_or_not;
 	int				time_to_die;
 	int				time_to_eat;
 	int				time_to_sleep;
@@ -41,6 +40,7 @@ typedef struct s_philo
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*print;
+	pthread_mutex_t	m_time;
 }					t_philo;
 
 typedef struct s_data

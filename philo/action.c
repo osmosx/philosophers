@@ -32,17 +32,20 @@ static void	right_fork(t_philo *philo)
 
 void	eating(t_philo *philo)
 {
-	long long	start_eat;
-
-	start_eat = get_time();
-	philo->last_eat = start_eat;
 	left_fork(philo);
 	right_fork(philo);
-	ft_time(philo->time_to_eat, start_eat);
+	pthread_mutex_lock(&(philo->m_time));
+	philo->last_eat = get_time();
+	pthread_mutex_unlock(&(philo->m_time));
+	ft_time(philo->last_eat, philo->time_to_eat);
 	pthread_mutex_unlock(philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
 	if (philo->count_eat > 0)
+	{
+		pthread_mutex_lock(&(philo->m_time));
 		philo->count_eat--;
+		pthread_mutex_unlock(&(philo->m_time));
+	}
 }
 
 void	sleeping(t_philo *philo)
@@ -54,7 +57,7 @@ void	sleeping(t_philo *philo)
 	printf("%lldms %d "SLEEP"", \
 	get_time() - philo->run_time, philo->id);
 	pthread_mutex_unlock(philo->print);
-	ft_time(philo->time_to_sleep, start_sleep);
+	ft_time(start_sleep, philo->time_to_sleep);
 }
 
 void	thinking(t_philo *philo)
