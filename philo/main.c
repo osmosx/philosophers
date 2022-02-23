@@ -26,7 +26,7 @@ void	*philo_actions(void *argv)
 	}
 }
 
-void	thread_create(t_data *data)
+int	thread_create(t_data *data)
 {
 	int	i;
 
@@ -35,11 +35,12 @@ void	thread_create(t_data *data)
 	{
 		if ((pthread_create(&data->philo[i].thread, NULL,
 					philo_actions, &data->philo[i])) != 0)
-			return ;
+			return (1);
 		i++;
 	}
 	if (end_of_life(data) == 1)
-		return ;
+		return (0);
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -48,7 +49,15 @@ int	main(int argc, char **argv)
 
 	if (check(argc, argv))
 		return (error_msg());
-	init(argc, argv, &data);
-	thread_create(&data);
+	if (init(argc, argv, &data) != 0)
+	{
+		write(2, "init error\n", 12);
+		return (0);
+	}
+	if (thread_create(&data) == 1)
+	{
+		write(2, "Error\n", 7);
+		return (0);
+	}
 	return (0);
 }

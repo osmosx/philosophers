@@ -31,7 +31,7 @@ void	init_philo(t_data *data, int argc, char **argv)
 		data->philo[i].last_eat = get_time();
 		data->philo[i].print = &data->print;
 		data->philo[i].left_fork = &data->forks[i];
-		data->philo[i].right_fork = &data->forks[i + 1];
+		data->philo[i].right_fork = &data->forks[(i + 1) % data->philo_count];
 		if (i == data->philo_count - 1)
 		{
 			data->philo[i].left_fork = &data->forks[i + 1];
@@ -51,24 +51,25 @@ static int	init_mutex(t_data *data)
 		return (1);
 	while (i < data->philo_count)
 	{
-		pthread_mutex_init(&data->forks[i], NULL);
-		pthread_mutex_init(&data->philo[i].m_time, NULL);
+		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
+			return (1);
+		if (pthread_mutex_init(&data->philo[i].m_time, NULL) != 0)
+			return (1);
 		i++;
 	}
-	pthread_mutex_init(&data->print, NULL);
+	if (pthread_mutex_init(&data->print, NULL) != 0)
+		return (1);
 	return (0);
 }
 
 int	init(int argc, char **argv, t_data *data)
 {
-	int	i;
-
-	i = 0;
 	data->philo_count = ft_atoi(argv[1]);
 	data->philo = malloc(sizeof(t_philo) * data->philo_count);
 	if (!data->philo)
 		return (1);
-	init_mutex(data);
+	if (init_mutex(data) != 0)
+		return (1);
 	init_philo(data, argc, argv);
 	return (0);
 }

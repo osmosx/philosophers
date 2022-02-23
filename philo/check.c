@@ -36,7 +36,7 @@ int	check(int argc, char **argv)
 			|| ft_atoi(argv[2]) < 60 || ft_atoi(argv[3]) < 60
 			|| ft_atoi(argv[4]) < 60)
 			return (1);
-		if (argc == 6 && ft_atoi(argv[5]) < 0)
+		if (argc == 6 && ft_atoi(argv[5]) <= 0)
 			return (1);
 		while (i < argc)
 		{
