@@ -7,13 +7,13 @@ OBJ = $(SRC:.c=.o)
 #
 FLAGS = -Wall -Werror -Wextra
 #
-NAME = philo
+NAME = philo_bonus
 #
 all: $(NAME)
 #
 $(NAME): $(OBJ) $(HEADER) Makefile
 	@$(CC) $(FLAGS) $(OBJ) -o $@
-	@echo "\033[32m\033[1m[philo compiled]"
+	@echo "\033[32m\033[1m[philo_bonus compiled]"
 #
 %.o: %.c
 	@$(CC) $(FLAGS) -c $<
@@ -27,3 +27,5 @@ fclean: clean
 #
 re: fclean all
 #
+# -g -fsanitize=address
+# -g -fsanitize=thread

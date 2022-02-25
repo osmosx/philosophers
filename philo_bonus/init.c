@@ -20,7 +20,8 @@ void	init_philo(t_data *data, int argc, char **argv)
 	while (i < data->philo_count)
 	{
 		data->philo[i].id = i + 1;
-		data->philo[i].dead = -1;
+		data->philo[i].p_forks = data->forks;
+		data->philo[i].p_print = data->print;
 		data->philo[i].time_to_die = ft_atoi(argv[2]);
 		data->philo[i].time_to_eat = ft_atoi(argv[3]);
 		data->philo[i].time_to_sleep = ft_atoi(argv[4]);
@@ -29,7 +30,7 @@ void	init_philo(t_data *data, int argc, char **argv)
 		else
 			data->philo[i].count_eat = -1;
 		data->philo[i].run_time = get_time();
-		data->philo[i].last_eat = get_time();
+		data->philo[i].start_eat = get_time();
 		i++;
 	}
 }
@@ -37,11 +38,11 @@ void	init_philo(t_data *data, int argc, char **argv)
 int	init_forks(t_data *data)
 {
 	sem_unlink("/fork");
-	data->forks = sem_open("/fork", O_CREAT, S_IRWXU, data->philo_count);
+	data->forks = sem_open("/fork", O_CREAT, 0644, data->philo_count);
 	if (data->forks == SEM_FAILED)
 		return (1);
 	sem_unlink("/print");
-	data->print = sem_open("/print", O_CREAT, S_IRWXU, 1);
+	data->print = sem_open("/print", O_CREAT, 0644, 1);
 	if (data->print == SEM_FAILED)
 		return (1);
 	return (0);

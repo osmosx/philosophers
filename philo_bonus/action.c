@@ -13,57 +13,49 @@
 
 static void	left_fork(t_philo *philo)
 {
-	pthread_mutex_lock(philo->left_fork);
-	pthread_mutex_lock(philo->print);
+	sem_wait(philo->p_forks);
+	sem_wait(philo->p_print);
 	printf("%lldms %d "FORK_L"", \
 	get_time() - philo->run_time, philo->id);
-	pthread_mutex_unlock(philo->print);
+	sem_post(philo->p_print);
 }
 
 static void	right_fork(t_philo *philo)
 {
-	pthread_mutex_lock(philo->right_fork);
-	pthread_mutex_lock(philo->print);
-	printf("%lldms %d "FORK_R"%lldms %d "EAT"", \
-	get_time() - philo->run_time, philo->id, \
+	sem_wait(philo->p_forks);
+	sem_wait(philo->p_print);
+	printf("%lldms %d "FORK_R"", \
 	get_time() - philo->run_time, philo->id);
-	pthread_mutex_unlock(philo->print);
+	sem_post(philo->p_print);
 }
 
 void	eating(t_philo *philo)
 {
 	left_fork(philo);
 	right_fork(philo);
-	pthread_mutex_lock(&(philo->m_time));
-	philo->last_eat = get_time();
-	pthread_mutex_unlock(&(philo->m_time));
+	philo->start_eat = get_time();
+	sem_wait(philo->p_print);
+	printf("%lldms %d "EAT"", \
+	get_time() - philo->run_time, philo->id);
+	sem_post(philo->p_print);
 	ft_time(philo->time_to_eat);
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
-	if (philo->count_eat > 0)
-	{
-		pthread_mutex_lock(&(philo->m_time));
-		philo->count_eat--;
-		pthread_mutex_unlock(&(philo->m_time));
-	}
+	sem_post(philo->p_forks);
+	sem_post(philo->p_forks);
 }
 
 void	sleeping(t_philo *philo)
 {
-	long long	start_sleep;
-
-	start_sleep = get_time();
-	pthread_mutex_lock(philo->print);
+	sem_wait(philo->p_print);
 	printf("%lldms %d "SLEEP"", \
 	get_time() - philo->run_time, philo->id);
-	pthread_mutex_unlock(philo->print);
+	sem_post(philo->p_print);
 	ft_time(philo->time_to_sleep);
 }
 
 void	thinking(t_philo *philo)
 {
-	pthread_mutex_lock(philo->print);
+	sem_wait(philo->p_print);
 	printf("%lldms %d "THINK"", \
 	get_time() - philo->run_time, philo->id);
-	pthread_mutex_unlock(philo->print);
+	sem_post(philo->p_print);
 }

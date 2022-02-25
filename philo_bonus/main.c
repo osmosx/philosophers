@@ -11,44 +11,53 @@
 /* ************************************************************************** */
 #include "philo.h"
 
-void	*philo_actions(void *argv)
+void	*philo_actions(t_philo	*philo)
 {
-	t_philo	*philo;
-
-	philo = (t_philo *)argv;
-	if (philo->id % 2 != 0)
-		usleep(100);
+	philo->run_time = get_time();
 	while (1)
 	{
 		eating(philo);
 		sleeping(philo);
 		thinking(philo);
+		if (philo->count_eat != -1)
+			philo->count_eat--;
 	}
 }
 
-int	thread_create(t_data *data)
+void	philo_process(t_philo *philo)
+{
+	pthread_t	monitor;
+
+	if (pthread_create(&monitor, NULL, monitoring, philo) != 0)
+		exit(1);
+	philo_actions(philo);
+	if (pthread_join(monitor, NULL) != 0)
+		exit(1);
+	exit(0);
+}
+
+int	create_action(t_data *data)
 {
 	int		i;
-	pid_t	pid;
 
 	i = 0;
 	while (i < data->philo_count)
 	{
-		pid = fork();
-		if (pid < 0)
-			return (1);
-		if (pid == 0)
+		data->philo[i].pid = fork();
+		if (data->philo[i].pid == 0)
+			philo_process(&data->philo[i]);
+		if (data->philo[i].pid < 0)
 		{
-			if ((pthread_create(&data->philo[i].thread, NULL, \
-								philo_actions, &data->philo[i])) != 0)
-				return (1);
-//			death_check(???);
+			while (i >= 0)
+			{
+				kill(data->philo[i].pid, SIGKILL);
+				i--;
+			}
+			write(2, "Fork error\n", 12);
+			exit(1);
 		}
-		data->philo[i].pid = pid;
 		i++;
 	}
-//	if (end_of_life(data) == 1)    ?????
-//		return (0);
 	return (0);
 }
 
@@ -61,12 +70,14 @@ int	main(int argc, char **argv)
 	if (init(argc, argv, &data) != 0)
 	{
 		write(2, "init error\n", 12);
-		return (0);
+		exit(1);
 	}
-	if (thread_create(&data) == 1)
-	{
-		write(2, "error\n", 7);
-		return (0);
-	}
+	create_action(&data);
+	waitpid(-1, NULL, 0);
+	sem_close(data.forks);
+	sem_close(data.print);
+	sem_unlink("/fork");
+	sem_unlink("/print");
+	free(data.philo);
 	return (0);
 }
