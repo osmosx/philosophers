@@ -5,8 +5,8 @@ SRC = 	action.c check.c end.c ft_atoi.c \
 #
 OBJ = $(SRC:.c=.o)
 #
-FLAGS = -Wall -Werror -Wextra
-#
+FLAGS =  -pthread
+#-Wall -Werror -Wextra
 NAME = philo
 #
 all: $(NAME)
