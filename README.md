@@ -47,3 +47,9 @@ make -C philo/
 ./philo 4 500 200 200
 ./philo 7 310 100 100 7
 ```
+###Docker
+```bash
+cd philo
+docker build -t philo .
+docker run philo 4 60 60 80 
+```
